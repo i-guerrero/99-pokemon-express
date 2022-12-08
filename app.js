@@ -97,7 +97,7 @@ function renderPokemonList(pokemon) {
       return `<li><a href="/pokemon-pretty/${i}">${poke.name}</a></li>`;
     })
     .join("");
-  listStr += "</ul>";
+  listStr += "</ul><style>body {background-color: yellow}</style>";
   return listStr;
 }
 
