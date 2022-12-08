@@ -40,6 +40,7 @@ app.get("/bugs/:numberOfBugs", (req, res) => {
 // Poke-Express
 const pokemon = require("./models/pokemon.json");
 
+// Function not used - thought I had to make a list of lis with Pokemon names
 function renderPokemonList(pokemon) {
   let listStr = "<ul>";
   listStr += pokemon
@@ -53,6 +54,15 @@ function renderPokemonList(pokemon) {
 
 app.get("/pokemon", (req, res) => {
   res.send(pokemon);
+});
+
+app.get("/pokemon/:indexOfArray", (req, res) => {
+  const { indexOfArray } = req.params;
+  if (pokemon[indexOfArray]) {
+    res.send(pokemon[indexOfArray]);
+  } else {
+    res.send(`Sorry, no pokemon found at ${indexOfArray}`);
+  }
 });
 
 // EXPORTS
