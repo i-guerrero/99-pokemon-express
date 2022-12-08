@@ -40,18 +40,6 @@ app.get("/bugs/:numberOfBugs", (req, res) => {
 // Poke-Express
 const pokemon = require("./models/pokemon.json");
 
-// Function not used - thought I had to make a list of lis with Pokemon names
-function renderPokemonList(pokemon) {
-  let listStr = "<ul>";
-  listStr += pokemon
-    .map((poke) => {
-      return `<li>${poke.name}</li>`;
-    })
-    .join("");
-  listStr += "</ul>";
-  return listStr;
-}
-
 app.get("/pokemon", (req, res) => {
   res.send(pokemon);
 });
@@ -73,6 +61,35 @@ app.get("/pokemon/:indexOfArray", (req, res) => {
   } else {
     res.send(`Sorry, no pokemon found at ${indexOfArray}`);
   }
+});
+
+// BONUS
+
+function renderPokemonList(pokemon) {
+  let listStr = "<ul>";
+  listStr += pokemon
+    .map((poke, i) => {
+      return `<li><a href="/pokemon-pretty/${i}">${poke.name}</a></li>`;
+    })
+    .join("");
+  listStr += "</ul>";
+  return listStr;
+}
+
+app.get("/pokemon-pretty", (req, res) => {
+  res.send(renderPokemonList(pokemon));
+});
+
+function renderIndividualPokemon(individualPokemon) {
+  const nameStr = `<h2>${individualPokemon.name}</h2>`;
+  const imgStr = `<img src="${individualPokemon.img}" alt="${individualPokemon.name}"></img>`;
+  // render other stats
+  return nameStr + imgStr;
+}
+
+app.get("/pokemon-pretty/:index", (req, res) => {
+  const { index } = req.params;
+  res.send(renderIndividualPokemon(pokemon[index]));
 });
 
 // EXPORTS
