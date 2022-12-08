@@ -45,13 +45,38 @@ app.get("/pokemon", (req, res) => {
 });
 
 app.get("/pokemon/search", (req, res) => {
-  const { name } = req.query;
-  const poke = pokemon.filter(
-    (p) => p.name.toLowerCase() === name.toLowerCase()
-  );
-  if (poke) {
-    res.send(poke);
+  const { name, type } = req.query;
+  console.log(name);
+  console.log(type);
+  let searchCriteria = "";
+  if (name) {
+    searchCriteria = "name";
+  } else if (type) {
+    searchCriteria = "type";
   }
+
+  function filterPokemon(search) {
+    if (search === "name") {
+      let pokeByName = pokemon.filter((p) => {
+        return p.name.toLowerCase() === name.toLowerCase();
+      });
+      return pokeByName;
+    } else if (search === "type") {
+      let pokeByType = pokemon.filter((p) => {
+        return p.type
+          .map((pokemonType) => pokemonType.toLowerCase())
+          .includes(type.toLowerCase());
+      });
+      return pokeByType;
+    }
+  }
+
+  console.log(searchCriteria);
+  // Filter pokemon
+  //   const poke = pokemon.filter((p) => {
+  //     return p[searchCriteria].toLowerCase() === name.toLowerCase();
+  //   });
+  res.send(filterPokemon(searchCriteria));
 });
 
 app.get("/pokemon/:indexOfArray", (req, res) => {
